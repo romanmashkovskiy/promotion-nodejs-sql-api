@@ -1,7 +1,7 @@
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import env from '../config/env';
 import {pick} from 'lodash';
+import {generateHash} from '../utils/hash';
 
 
 export default (sequelize, DateTypes) => {
@@ -42,7 +42,7 @@ export default (sequelize, DateTypes) => {
 
     const hashPassword = async (user) => {
         if (!user.changed('password')) return;
-        user.setDataValue('password', await bcrypt.hash(user.password, 10));
+        user.setDataValue('password', await generateHash(user.password));
     };
 
     User.beforeCreate(hashPassword);
@@ -54,6 +54,14 @@ export default (sequelize, DateTypes) => {
 
     User.prototype.getToken = function () {
         return jwt.sign(this.getTokenData(), env.JWT_SECRET, {expiresIn: env.JWT_EXPIRES_IN});
+    };
+
+    User.prototype.toJSON = function () {
+        const data = this.dataValues;
+        delete data.password;
+        delete data.createdAt;
+        delete data.updatedAt;
+        return data;
     };
 
     return User;

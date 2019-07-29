@@ -1,9 +1,9 @@
 import passport from 'passport';
 import {Strategy as LocalStrategy} from 'passport-local';
 import {Strategy as JWTStrategy, ExtractJwt} from 'passport-jwt';
-import {User} from '../models';
+import models from '../models';
 import env from '../config/env';
-import bcrypt from 'bcrypt';
+import {validateHash} from '../utils/hash';
 
 passport.use(new LocalStrategy(
     {
@@ -12,9 +12,10 @@ passport.use(new LocalStrategy(
     },
     async (email, password, next) => {
         try {
-            const user = await User.findOne({where: {email: email}});
+            const user = await models.User.findOne({where: {email: email}});
 
-            if (!user || !await bcrypt.compare(password, user.password_hash)) {
+
+            if (!user || !await validateHash(password, user.password)) {
                 return next(null, false, {message: 'Invalid email or password'});
             }
             next(null, user);

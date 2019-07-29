@@ -13,6 +13,16 @@ const authController = {
             user
         });
     },
+    login: async (req, res) => {
+        const {user} = req;
+
+        const token = await user.getToken();
+
+        return successResponse(res, {
+            token,
+            user
+        });
+    },
 };
 
 export default authController;
