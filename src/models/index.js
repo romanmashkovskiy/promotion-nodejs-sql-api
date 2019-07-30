@@ -11,7 +11,6 @@ const basename = path.basename(__filename);
 
 const sequelize = new Sequelize(config.database, config.username, config.password, {
     ...config,
-    // operatorsAliases: Sequelize.Op
 });
 
 fs

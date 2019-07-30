@@ -13,6 +13,7 @@ Router.post('/auth/login', loginGuard(), authController.login);
 /* Not found handler */
 Router.use((req, res, next) => next(new APIError(`${req.url} - Not Found`, 404)));
 
+/* Error handler */
 Router.use((err, req, res, next) => {
     switch (err.name) {
         case 'ValidationError':
