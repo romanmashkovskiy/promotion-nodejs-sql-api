@@ -3,14 +3,13 @@ import env from '../config/env';
 import {pick} from 'lodash';
 import {generateHash} from '../utils/hash';
 
-
 export default (sequelize, DateTypes) => {
     const User = sequelize.define('user', {
         uuid: {
             type: DateTypes.UUID,
             defaultValue: DateTypes.UUIDV4
         },
-        username: {
+        userName: {
             type: DateTypes.STRING,
             allowNull: false,
         },
@@ -39,6 +38,10 @@ export default (sequelize, DateTypes) => {
         underscored: true,
         timestamps: true,
     });
+
+    User.associate = ({Product}) => {
+        User.hasMany(Product);
+    };
 
     const hashPassword = async (user) => {
         if (!user.changed('password')) return;

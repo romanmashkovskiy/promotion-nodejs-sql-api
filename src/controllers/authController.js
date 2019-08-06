@@ -5,9 +5,9 @@ const {User} = models;
 
 const authController = {
     register: async (req, res) => {
-        const {username, email, password} = req.body;
+        const {userName, email, password} = req.body;
 
-        const user = await User.create({username, email, password});
+        const user = await User.create({userName, email, password});
         const token = await user.getToken();
 
         return successResponse(res, {
@@ -25,6 +25,9 @@ const authController = {
             user
         });
     },
+    getMe: async ({user}, res) => successResponse(res, {
+        user
+    }),
 };
 
 export default authController;

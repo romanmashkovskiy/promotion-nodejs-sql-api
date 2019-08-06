@@ -14,3 +14,19 @@ export const loginGuard = () => (req, res, next) => {
         next();
     })(req, res, next);
 };
+
+export const accessGuard = () => (req, res, next) => {
+    passport.authenticate('jwt', {session: false}, (err, user, info) => {
+        if (err || !user) {
+            const message = info ? info.message : 'Forbidden';
+            const code = info && info.expiredAt ? 401 : 403;
+
+            return errorResponse(res, new APIError(message, code));
+        }
+
+        req.user = user;
+
+        next();
+    })(req, res, next);
+};
+
