@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"cross-env PORT=4001 nodemon ./src/server.js --exec babel-node\""
+    "dev": "concurrently \"cross-env PORT=4001 nodemon ./src/server.js --exec babel-node\"",
+    "db:setup": "babel-node ./src/bin/db"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
