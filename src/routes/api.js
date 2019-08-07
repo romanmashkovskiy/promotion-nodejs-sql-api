@@ -1,5 +1,5 @@
 import PromiseRouter from 'express-promise-router';
-import {authController} from '../controllers';
+import {authController, productsController} from '../controllers';
 import APIError from '../utils/APIError';
 import {errorResponse} from '../utils/response';
 import {loginGuard, accessGuard} from '../middlewares';
@@ -10,6 +10,10 @@ const Router = PromiseRouter();
 Router.post('/auth/register', authController.register);
 Router.post('/auth/login', loginGuard(), authController.login);
 Router.get('/auth/me', accessGuard(), authController.getMe);
+
+/*Products*/
+Router.post('/my-products', accessGuard(), productsController.addProduct);
+Router.get('/my-products', accessGuard(), productsController.getMyProducts);
 
 /* Not found handler */
 Router.use((req, res, next) => next(new APIError(`${req.url} - Not Found`, 404)));
