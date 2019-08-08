@@ -1,4 +1,7 @@
 import {successResponse} from '../utils/response';
+import models from '../models';
+
+const {Product, User} = models;
 
 const productsController = {
     addProduct: async (req, res) => {
@@ -15,6 +18,17 @@ const productsController = {
         const {user} = req;
 
         const products = await user.getProducts();
+
+        return successResponse(res, products);
+    },
+    list: async (req, res) => {
+        const products = await Product.findAll({
+            raw: true,
+            include: [{
+                model: User,
+                attributes: ['userName'],
+            }]
+        });
 
         return successResponse(res, products);
     },

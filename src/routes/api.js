@@ -14,6 +14,7 @@ Router.get('/auth/me', accessGuard(), authController.getMe);
 /*Products*/
 Router.post('/my-products', accessGuard(), productsController.addProduct);
 Router.get('/my-products', accessGuard(), productsController.getMyProducts);
+Router.get('/products', productsController.list);
 
 /* Not found handler */
 Router.use((req, res, next) => next(new APIError(`${req.url} - Not Found`, 404)));
