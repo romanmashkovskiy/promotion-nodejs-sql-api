@@ -15,6 +15,7 @@ Router.get('/auth/me', accessGuard(), authController.getMe);
 Router.post('/my-products', accessGuard(), productsController.addProduct);
 Router.get('/my-products', accessGuard(), productsController.getMyProducts);
 Router.get('/products', productsController.list);
+Router.delete('/my-products/:id', accessGuard(), productsController.deleteProduct);
 
 /* Not found handler */
 Router.use((req, res, next) => next(new APIError(`${req.url} - Not Found`, 404)));

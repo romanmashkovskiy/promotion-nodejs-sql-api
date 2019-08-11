@@ -23,7 +23,6 @@ const productsController = {
     },
     list: async (req, res) => {
         const products = await Product.findAll({
-            raw: true,
             include: [{
                 model: User,
                 attributes: ['userName'],
@@ -31,6 +30,17 @@ const productsController = {
         });
 
         return successResponse(res, products);
+    },
+    deleteProduct: async (req, res) => {
+        const {params: {id}} = req;
+
+        await Product.destroy({
+            where: {
+                id
+            }
+        });
+
+        return successResponse(res, {message: 'Product deleted successfully'});
     },
 };
 
