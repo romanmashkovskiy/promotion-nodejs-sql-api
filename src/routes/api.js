@@ -14,6 +14,8 @@ Router.get('/auth/me', accessGuard(), authController.getMe);
 /*Products*/
 Router.post('/my-products', accessGuard(), productsController.addProduct);
 Router.get('/my-products', accessGuard(), productsController.getMyProducts);
+Router.get('/my-products/:id', accessGuard(), productsController.getMyProduct);
+Router.put('/my-products/:id', accessGuard(), productsController.changeProduct);
 Router.get('/products', productsController.list);
 Router.delete('/my-products/:id', accessGuard(), productsController.deleteProduct);
 

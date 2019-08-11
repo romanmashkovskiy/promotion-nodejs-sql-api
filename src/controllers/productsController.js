@@ -21,6 +21,13 @@ const productsController = {
 
         return successResponse(res, products);
     },
+    getMyProduct: async (req, res) => {
+        const {params: {id}} = req;
+
+        const product = await Product.findByPk(id);
+
+        return successResponse(res, product);
+    },
     list: async (req, res) => {
         const products = await Product.findAll({
             include: [{
@@ -42,6 +49,17 @@ const productsController = {
 
         return successResponse(res, {message: 'Product deleted successfully'});
     },
+    changeProduct: async (req, res) => {
+        const {params: {id}, body: {title, description}} = req;
+
+        await Product.update({title, description}, {
+            where: {
+                id
+            }
+        });
+
+        return successResponse(res, {message: 'Product changed successfully'});
+    }
 };
 
 export default productsController;
