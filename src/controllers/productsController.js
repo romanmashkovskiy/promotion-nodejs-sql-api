@@ -17,7 +17,12 @@ const productsController = {
     getMyProducts: async (req, res) => {
         const {user} = req;
 
-        const products = await user.getProducts();
+        const products = await user.getProducts({
+            include: [{
+                model: User,
+                attributes: ['userName']
+            }]
+        });
 
         return successResponse(res, products);
     },
@@ -32,7 +37,7 @@ const productsController = {
         const products = await Product.findAll({
             include: [{
                 model: User,
-                attributes: ['userName'],
+                attributes: ['userName']
             }]
         });
 
