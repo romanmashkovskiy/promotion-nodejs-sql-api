@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "3dc4a758-4848-47e0-8e6b-3614559d5fd7",
+		"_postman_id": "463597a0-b15c-45bc-a621-1edb84da7052",
 		"name": "promotion",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -251,7 +251,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "5c180ddc-5073-41fe-8fae-4223ed0bb39e"
 								}
 							]
 						}
@@ -339,7 +339,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "5c180ddc-5073-41fe-8fae-4223ed0bb39e"
 								}
 							]
 						}

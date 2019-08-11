@@ -5,9 +5,10 @@ import {generateHash} from '../utils/hash';
 
 export default (sequelize, DateTypes) => {
     const User = sequelize.define('user', {
-        uuid: {
+        id: {
             type: DateTypes.UUID,
-            defaultValue: DateTypes.UUIDV4
+            defaultValue: DateTypes.UUIDV4,
+            primaryKey: true
         },
         userName: {
             type: DateTypes.STRING,
@@ -52,7 +53,7 @@ export default (sequelize, DateTypes) => {
     User.beforeUpdate(hashPassword);
 
     User.prototype.getTokenData = function () {
-        return pick(this.dataValues, ['id', 'uuid']);
+        return pick(this.dataValues, ['id', 'email']);
     };
 
     User.prototype.getToken = function () {

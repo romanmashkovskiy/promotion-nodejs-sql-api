@@ -39,7 +39,7 @@ passport.use(new JWTStrategy(
             const user = await User.findOne({
                 where: {
                     id: payload.id,
-                    uuid: payload.uuid
+                    email: payload.email
                 }
             });
 
