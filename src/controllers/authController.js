@@ -15,6 +15,7 @@ const authController = {
             user
         });
     },
+
     login: async (req, res) => {
         const {user} = req;
 
@@ -25,6 +26,7 @@ const authController = {
             user
         });
     },
+
     getMe: async ({user}, res) => successResponse(res, {
         user
     }),

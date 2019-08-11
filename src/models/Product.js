@@ -22,5 +22,12 @@ export default (sequelize, DateTypes) => {
         Product.belongsTo(User);
     };
 
+    Product.prototype.toJSON = function () {
+        const data = this.dataValues;
+        delete data.createdAt;
+        delete data.updatedAt;
+        return data;
+    };
+
     return Product;
 };
