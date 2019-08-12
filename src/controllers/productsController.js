@@ -37,7 +37,7 @@ const productsController = {
         return successResponse(res, products);
     },
 
-    getMyProduct: async (req, res) => {
+    getProduct: async (req, res) => {
         const { params: { id } } = req;
 
         const product = await Product.findByPk(id);
@@ -45,7 +45,7 @@ const productsController = {
         return successResponse(res, product);
     },
 
-    list: async (req, res) => {
+    getProducts: async (req, res) => {
         const products = await Product.findAll({
             include: [
                 {
@@ -87,6 +87,19 @@ const productsController = {
         });
 
         return successResponse(res, { message: 'Product changed successfully' });
+    },
+
+    addReview: async (req, res) => {
+        const { user, body: { rating, text }, params: { id } } = req;
+
+        await Review.create({
+            rating,
+            text,
+            userId: user.id,
+            productId: id
+        });
+
+        return successResponse(res, { message: 'Review added successfully' });
     }
 };
 

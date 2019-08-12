@@ -18,9 +18,9 @@ export default (sequelize, DateTypes) => {
         timestamps: true,
     });
 
-    Product.associate = ({User, Review}) => {
+    Product.associate = ({ User, Review }) => {
         Product.belongsTo(User);
-        Product.hasMany(Review);
+        Product.hasMany(Review, { onDelete: 'CASCADE' });
     };
 
     Product.prototype.toJSON = function () {

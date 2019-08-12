@@ -15,10 +15,11 @@ Router.get('/auth/me', accessGuard(), authController.getMe);
 /*Products*/
 Router.post('/my-products', accessGuard(), productsController.addProduct);
 Router.get('/my-products', accessGuard(), productsController.getMyProducts);
-Router.get('/my-products/:id', accessGuard(), productsController.getMyProduct);
 Router.put('/my-products/:id', accessGuard(), productsController.changeProduct);
-Router.get('/products', productsController.list);
+Router.get('/products', productsController.getProducts);
+Router.get('/products/:id', productsController.getProduct);
 Router.delete('/my-products/:id', accessGuard(), productsController.deleteProduct);
+Router.post('/products/:id/add-review', accessGuard(), productsController.addReview);
 
 /* Not found handler */
 Router.use((req, res, next) => next(new APIError(`${ req.url } - Not Found`, 404)));
