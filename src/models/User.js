@@ -40,8 +40,9 @@ export default (sequelize, DateTypes) => {
         timestamps: true,
     });
 
-    User.associate = ({Product}) => {
+    User.associate = ({Product, Review}) => {
         User.hasMany(Product);
+        User.hasMany(Review);
     };
 
     const hashPassword = async (user) => {

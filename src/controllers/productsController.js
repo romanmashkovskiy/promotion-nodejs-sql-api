@@ -1,35 +1,40 @@
-import {successResponse} from '../utils/response';
+import { successResponse } from '../utils/response';
 import models from '../models';
 
-const {Product, User} = models;
+const { Product, User, Review } = models;
 
 const productsController = {
     addProduct: async (req, res) => {
-        const {user, body: {title, description}} = req;
+        const { user, body: { title, description } } = req;
 
         await user.createProduct({
             title,
             description
         });
 
-        return successResponse(res, {message: 'Product created successfully'});
+        return successResponse(res, { message: 'Product created successfully' });
     },
 
     getMyProducts: async (req, res) => {
-        const {user} = req;
+        const { user } = req;
 
         const products = await user.getProducts({
-            include: [{
-                model: User,
-                attributes: ['userName', 'email']
-            }]
+            include: [
+                {
+                    model: User,
+                    attributes: ['userName', 'email']
+                },
+                {
+                   model: Review
+                }
+            ]
         });
 
         return successResponse(res, products);
     },
 
     getMyProduct: async (req, res) => {
-        const {params: {id}} = req;
+        const { params: { id } } = req;
 
         const product = await Product.findByPk(id);
 
@@ -38,17 +43,22 @@ const productsController = {
 
     list: async (req, res) => {
         const products = await Product.findAll({
-            include: [{
-                model: User,
-                attributes: ['userName', 'email']
-            }]
+            include: [
+                {
+                    model: User,
+                    attributes: ['userName', 'email']
+                },
+                {
+                    model: Review
+                }
+            ]
         });
 
         return successResponse(res, products);
     },
 
     deleteProduct: async (req, res) => {
-        const {params: {id}} = req;
+        const { params: { id } } = req;
 
         await Product.destroy({
             where: {
@@ -56,19 +66,19 @@ const productsController = {
             }
         });
 
-        return successResponse(res, {message: 'Product deleted successfully'});
+        return successResponse(res, { message: 'Product deleted successfully' });
     },
 
     changeProduct: async (req, res) => {
-        const {params: {id}, body: {title, description}} = req;
+        const { params: { id }, body: { title, description } } = req;
 
-        await Product.update({title, description}, {
+        await Product.update({ title, description }, {
             where: {
                 id
             }
         });
 
-        return successResponse(res, {message: 'Product changed successfully'});
+        return successResponse(res, { message: 'Product changed successfully' });
     }
 };
 

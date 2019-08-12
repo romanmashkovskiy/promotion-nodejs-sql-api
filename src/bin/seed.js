@@ -1,19 +1,19 @@
 import models from '../models';
 
-const {User, Product} = models;
+const {User, Product, Review} = models;
 
 const seed = () => {
     return Promise.all([
         User.create({
             id: '0c683b6e-32d5-445d-bd1a-589ea455106b',
-            userName: 'Bob',
-            email: 'bob@gmail.com',
+            userName: 'User1',
+            email: 'user1@gmail.com',
             password: 'asdfasdf'
         }),
         User.create({
             id: 'ad912e3f-432c-4723-8245-2eb3a665b0b0',
-            userName: 'Tom',
-            email: 'tom@gmail.com',
+            userName: 'User2',
+            email: 'user2@gmail.com',
             password: 'asdfasdf'
         }),
         Product.create({
@@ -36,13 +36,48 @@ const seed = () => {
             title: 'Phone4',
             description: 'nice phone4'
         }),
+        Review.create({
+            id: '0ad7a87c-26e1-4798-92b5-ad943c5f976c',
+            rating: 1,
+            text: 'very bad phone'
+        }),
+        Review.create({
+            id: 'fe79babe-2bc6-4499-8daf-5515080a8c01',
+            rating: 2,
+            text: 'bad phone'
+        }),
+        Review.create({
+            id: '1343c8cc-dfc5-4fbe-84aa-1783597149fb',
+            rating: 3,
+            text: 'not bad phone'
+        }),
+        Review.create({
+            id: 'da6347c3-8192-48b0-96ab-64ed6787940a',
+            rating: 4,
+            text: 'good phone'
+        }),
+        Review.create({
+            id: 'd7a4fe0c-0aa5-4a27-854b-db1ea556119a',
+            rating: 5,
+            text: 'very good phone'
+        }),
     ])
-        .then(([Bob, Tom, Phone1, Phone2, Phone3, Phone4]) => {
+        .then(([User1, User2, Product1, Product2, Product3, Product4, Review1, Review2, Review3, Review4, Review5]) => {
             return Promise.all([
-                Phone1.setUser(Bob),
-                Phone2.setUser(Bob),
-                Phone3.setUser(Tom),
-                Phone4.setUser(Tom),
+                Product1.setUser(User1),
+                Product2.setUser(User1),
+                Product3.setUser(User2),
+                Product4.setUser(User2),
+                Review1.setProduct(Product1),
+                Review2.setProduct(Product2),
+                Review3.setProduct(Product3),
+                Review4.setProduct(Product4),
+                Review5.setProduct(Product4),
+                Review1.setUser(User1),
+                Review2.setUser(User1),
+                Review3.setUser(User1),
+                Review4.setUser(User2),
+                Review5.setUser(User2),
             ]);
         })
         .catch(error => console.log(error));

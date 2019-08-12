@@ -1,15 +1,15 @@
 export default (sequelize, DateTypes) => {
-    const Product = sequelize.define('product', {
+    const Review = sequelize.define('review', {
         id: {
             type: DateTypes.UUID,
             defaultValue: DateTypes.UUIDV4,
             primaryKey: true
         },
-        title: {
-            type: DateTypes.STRING,
+        rating: {
+            type: DateTypes.INTEGER,
             allowNull: false,
         },
-        description: {
+        text: {
             type: DateTypes.STRING,
             allowNull: false,
         },
@@ -18,17 +18,17 @@ export default (sequelize, DateTypes) => {
         timestamps: true,
     });
 
-    Product.associate = ({User, Review}) => {
-        Product.belongsTo(User);
-        Product.hasMany(Review);
+    Review.associate = ({Product, User}) => {
+        Review.belongsTo(Product);
+        Review.belongsTo(User);
     };
 
-    Product.prototype.toJSON = function () {
+    Review.prototype.toJSON = function () {
         const data = this.dataValues;
         delete data.createdAt;
         delete data.updatedAt;
         return data;
     };
 
-    return Product;
+    return Review;
 };
