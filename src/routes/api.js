@@ -1,8 +1,9 @@
 import PromiseRouter from 'express-promise-router';
-import {authController, productsController} from '../controllers';
+import { authController, productsController } from '../controllers';
 import APIError from '../utils/APIError';
-import {errorResponse} from '../utils/response';
-import {loginGuard, accessGuard} from '../middlewares';
+import { errorResponse } from '../utils/response';
+import { loginGuard, accessGuard } from '../middlewares';
+import { pick } from 'lodash';
 
 const Router = PromiseRouter();
 
@@ -20,21 +21,24 @@ Router.get('/products', productsController.list);
 Router.delete('/my-products/:id', accessGuard(), productsController.deleteProduct);
 
 /* Not found handler */
-Router.use((req, res, next) => next(new APIError(`${req.url} - Not Found`, 404)));
+Router.use((req, res, next) => next(new APIError(`${ req.url } - Not Found`, 404)));
 
 /* Error handler */
 Router.use((err, req, res, next) => {
     switch (err.name) {
-        case 'ValidationError':
-            const errors = values(err.errors).map(error => error.properties);
-            console.log(`${err.name}: `, errors);
+        case 'SequelizeValidationError':
+        case 'SequelizeUniqueConstraintError':
+            const errors = err.errors.map(error => pick(error,
+                ['message', 'path', 'value', 'type', 'validatorKey']
+            ));
+            console.log(`${ err.name }: `, errors);
             return errorResponse(res, {
                 name: err.name,
                 status: 422,
                 errors: errors
             });
         default: {
-            console.error(`${err.name}: `, err);
+            console.error(`${ err.name }: `, err);
             return errorResponse(res, err);
         }
     }
