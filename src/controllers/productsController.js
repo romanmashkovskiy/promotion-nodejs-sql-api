@@ -25,7 +25,11 @@ const productsController = {
                     attributes: ['userName', 'email']
                 },
                 {
-                   model: Review
+                    model: Review,
+                    include: [{
+                        model: User,
+                        attributes: ['userName', 'email']
+                    }]
                 }
             ]
         });
@@ -49,7 +53,11 @@ const productsController = {
                     attributes: ['userName', 'email']
                 },
                 {
-                    model: Review
+                    model: Review,
+                    include: [{
+                        model: User,
+                        attributes: ['userName', 'email']
+                    }]
                 }
             ]
         });
