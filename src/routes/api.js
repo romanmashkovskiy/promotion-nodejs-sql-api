@@ -4,6 +4,7 @@ import APIError from '../utils/APIError';
 import { errorResponse } from '../utils/response';
 import { loginGuard, accessGuard } from '../middlewares';
 import { pick } from 'lodash';
+import upload from '../utils/uploader.js';
 
 const Router = PromiseRouter();
 
@@ -13,7 +14,7 @@ Router.post('/auth/login', loginGuard(), authController.login);
 Router.get('/auth/me', accessGuard(), authController.getMe);
 
 /*Products*/
-Router.post('/my-products', accessGuard(), productsController.addProduct);
+Router.post('/my-products', [accessGuard(), upload.array('pictures')], productsController.addProduct);
 Router.get('/my-products', accessGuard(), productsController.getMyProducts);
 Router.put('/my-products/:id', accessGuard(), productsController.changeProduct);
 Router.get('/products', productsController.getProducts);

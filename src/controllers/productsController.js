@@ -5,7 +5,9 @@ const { Product, User, Review } = models;
 
 const productsController = {
     addProduct: async (req, res) => {
-        const { user, body: { title, description } } = req;
+        const { user, body: { title, description }, files } = req;
+
+        console.log(files);
 
         await user.createProduct({
             title,
