@@ -23,13 +23,6 @@ const productsController = {
                 {
                     model: User,
                     attributes: ['userName', 'email']
-                },
-                {
-                    model: Review,
-                    include: [{
-                        model: User,
-                        attributes: ['userName', 'email']
-                    }]
                 }
             ]
         });
@@ -40,7 +33,22 @@ const productsController = {
     getProduct: async (req, res) => {
         const { params: { id } } = req;
 
-        const product = await Product.findByPk(id);
+        const product = await Product.findByPk(id, {
+                include: [
+                    {
+                        model: User,
+                        attributes: ['userName', 'email']
+                    },
+                    {
+                        model: Review,
+                        include: [{
+                            model: User,
+                            attributes: ['userName', 'email']
+                        }]
+                    }
+                ]
+            }
+        );
 
         return successResponse(res, product);
     },
@@ -51,13 +59,6 @@ const productsController = {
                 {
                     model: User,
                     attributes: ['userName', 'email']
-                },
-                {
-                    model: Review,
-                    include: [{
-                        model: User,
-                        attributes: ['userName', 'email']
-                    }]
                 }
             ]
         });
