@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { pick } from 'lodash';
+import 'babel-polyfill';
 import models from './models';
 import { apiRouter } from './routes';
 import { passport } from './core';
