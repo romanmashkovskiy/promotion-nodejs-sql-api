@@ -1,5 +1,6 @@
 import { successResponse } from '../utils/response';
 import models from '../models';
+import uploadPictures from '../utils/uploadPictures';
 
 const { Product, User, Review } = models;
 
