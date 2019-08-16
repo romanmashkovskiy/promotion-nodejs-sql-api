@@ -1,18 +1,20 @@
+import uuidv4 from 'uuid/v4';
 import { successResponse } from '../utils/response';
 import models from '../models';
-import uploadPictures from '../utils/uploadPictures';
-
+import { s3UploadBase64 } from '../utils/aws';
 const { Product, User, Review } = models;
 
 const productsController = {
     addProduct: async (req, res) => {
-        const { user, body: { title, description }, files } = req;
+        const { user, body: { title, description, pictures } } = req;
 
-        console.log(files);
+        const promises = pictures.map(picture => s3UploadBase64(`${ uuidv4() }-${ picture.name }`, picture));
+        const picturesUrl = await Promise.all(promises);
 
         await user.createProduct({
             title,
-            description
+            description,
+            pictures: picturesUrl
         });
 
         return successResponse(res, { message: 'Product created successfully' });

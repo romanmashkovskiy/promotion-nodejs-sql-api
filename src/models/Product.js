@@ -1,18 +1,27 @@
-export default (sequelize, DateTypes) => {
+export default (sequelize, DataTypes) => {
     const Product = sequelize.define('product', {
         id: {
-            type: DateTypes.UUID,
-            defaultValue: DateTypes.UUIDV4,
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
             primaryKey: true
         },
         title: {
-            type: DateTypes.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         description: {
-            type: DateTypes.STRING,
+            type: DataTypes.STRING,
             allowNull: false,
         },
+        pictures: {
+            type: DataTypes.TEXT,
+            get: function() {
+                return JSON.parse(this.getDataValue('pictures'));
+            },
+            set: function(val) {
+                return this.setDataValue('pictures', JSON.stringify(val));
+            }
+        }
     }, {
         underscored: true,
         timestamps: true,
@@ -21,13 +30,6 @@ export default (sequelize, DateTypes) => {
     Product.associate = ({ User, Review }) => {
         Product.belongsTo(User);
         Product.hasMany(Review, { onDelete: 'CASCADE' });
-    };
-
-    Product.prototype.toJSON = function () {
-        const data = this.dataValues;
-        delete data.createdAt;
-        delete data.updatedAt;
-        return data;
     };
 
     return Product;

@@ -19,22 +19,26 @@ const seed = () => {
         Product.create({
             id: '7fd51310-f0a4-4f50-8203-66fb098ff4e1',
             title: 'Phone1',
-            description: 'nice phone1'
+            description: 'nice phone1',
+            pictures: []
         }),
         Product.create({
             id: '5c180ddc-5073-41fe-8fae-4223ed0bb39e',
             title: 'Phone2',
-            description: 'nice phone2'
+            description: 'nice phone2',
+            pictures: []
         }),
         Product.create({
             id: 'b817c071-9784-451f-a737-c124c862fd96',
             title: 'Phone3',
-            description: 'nice phone3'
+            description: 'nice phone3',
+            pictures: []
         }),
         Product.create({
             id: 'd33be0c7-50b8-4c17-9dfe-2683272e7bc6',
             title: 'Phone4',
-            description: 'nice phone4'
+            description: 'nice phone4',
+            pictures: []
         }),
         Review.create({
             id: '0ad7a87c-26e1-4798-92b5-ad943c5f976c',

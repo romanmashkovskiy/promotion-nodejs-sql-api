@@ -8,19 +8,26 @@ AWS.config.update({
 });
 export const s3 = new AWS.S3();
 
-export const s3UploadFile = (key, content) => new Promise((resolve, reject) => {
-    s3.upload({
+export const s3UploadBase64 = (key, picture) => new Promise((resolve, reject) => {
+    const buf = Buffer.from(picture.base64.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+    new AWS.S3().putObject({
         Bucket: env.AWS_BUCKET,
         Key: key,
-        Body: new Buffer.from(content, 'binary'),
+        Body: buf,
+        ContentEncoding: 'base64',
+        ContentType: 'image/*',
         ACL: 'public-read'
-    }, (err, data) => {
-        if ( err ) {
-            reject(err);
+    }, (error, data) => {
+        if (error) {
+            reject(error);
         } else {
-            resolve(data);
+            resolve({
+                s3Key: key,
+                url: `https://s3.${ env.AWS_REGION }.amazonaws.com/${ env.AWS_BUCKET }/${ key }`,
+                name: picture.name
+            });
         }
-    })
+    });
 });
 
 export const s3RemoveFile = (key) => new Promise((resolve, reject) => {
@@ -28,7 +35,7 @@ export const s3RemoveFile = (key) => new Promise((resolve, reject) => {
         Bucket: env.AWS_BUCKET,
         Key: key
     }, (error, data) => {
-        if ( error ) {
+        if (error) {
             reject(error);
         } else {
             resolve(data);
