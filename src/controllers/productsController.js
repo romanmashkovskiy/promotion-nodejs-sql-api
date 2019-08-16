@@ -1,7 +1,8 @@
 import uuidv4 from 'uuid/v4';
 import { successResponse } from '../utils/response';
 import models from '../models';
-import { s3UploadBase64 } from '../utils/aws';
+import { s3UploadBase64, s3RemoveFile } from '../utils/aws';
+
 const { Product, User, Review } = models;
 
 const productsController = {
@@ -84,9 +85,23 @@ const productsController = {
     },
 
     changeProduct: async (req, res) => {
-        const { params: { id }, body: { title, description } } = req;
+        const { params: { id }, body: { title, description, pictures, deletedPictures } } = req;
 
-        await Product.update({ title, description }, {
+        const promisesAdded = pictures.map(picture => s3UploadBase64(`${ uuidv4() }-${ picture.name }`, picture));
+        const picturesUrlAdded = await Promise.all(promisesAdded);
+        await Promise.all(deletedPictures.map(picture => s3RemoveFile(picture.s3Key)));
+
+        const product = await Product.findByPk(id);
+
+        const updatedPictures = product.pictures
+            .filter(picture => !deletedPictures.find(pictureDeleted => picture.s3Key === pictureDeleted.s3Key))
+            .concat(picturesUrlAdded);
+
+        await Product.update({
+            title,
+            description,
+            pictures: updatedPictures
+        }, {
             where: {
                 id
             }
