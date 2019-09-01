@@ -75,6 +75,9 @@ const productsController = {
     deleteProduct: async (req, res) => {
         const { params: { id } } = req;
 
+        const product = await Product.findByPk(id);
+        await Promise.all(product.pictures.map(picture => s3RemoveFile(picture.s3Key)));
+
         await Product.destroy({
             where: {
                 id
