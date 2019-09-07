@@ -1,6 +1,8 @@
 import passport from 'passport';
 import {errorResponse} from '../utils/response';
 import APIError from '../utils/APIError';
+import models from '../models';
+const { User } = models;
 
 export const loginGuard = () => (req, res, next) => {
     passport.authenticate('local', {session: false}, (err, user, info) => {
@@ -28,5 +30,18 @@ export const accessGuard = () => (req, res, next) => {
 
         next();
     })(req, res, next);
+};
+
+export const resetPasswordGuard = () => async (req, res, next) => {
+    const { email } = req.body;
+    const user = await User.findByEmail(email);
+
+    if (!user) {
+        return errorResponse(res, new APIError('Not found.', 404));
+    }
+
+    req.user = user;
+
+    next();
 };
 

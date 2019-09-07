@@ -8,13 +8,16 @@ const seed = () => {
             id: '0c683b6e-32d5-445d-bd1a-589ea455106b',
             userName: 'User1',
             email: 'user1@gmail.com',
-            password: 'asdfasdf'
+            password: 'asdfasdf',
+            isConfirmed: true
+
         }),
         User.create({
             id: 'ad912e3f-432c-4723-8245-2eb3a665b0b0',
             userName: 'User2',
             email: 'user2@gmail.com',
-            password: 'asdfasdf'
+            password: 'asdfasdf',
+            isConfirmed: true
         }),
         Product.create({
             id: '7fd51310-f0a4-4f50-8203-66fb098ff4e1',
