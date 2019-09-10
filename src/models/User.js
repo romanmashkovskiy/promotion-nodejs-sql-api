@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import env from '../config/env';
 import { pick } from 'lodash';
 import { generateHash } from '../utils/hash';
+import { sesSendEmail } from '../utils/aws';
 
 export default (sequelize, DateTypes) => {
     const User = sequelize.define('user', {
@@ -73,22 +74,27 @@ export default (sequelize, DateTypes) => {
 
     User.prototype.sendResetPasswordCode = async function () {
         this.resetPasswordCode = Math.random().toString(36).substring(2, 6);
+        const subject = 'Reset password';
         if (env.DEBUG === 'true') {
             console.log(
                 this.email,
-                'no-reply@inspectagram.net',
-                'Reset password',
-                `Reset code is: ${ this.resetPasswordCode }`
+                subject,
+                `Reset password code is: ${ this.resetPasswordCode }`
             );
         } else {
-
+            await sesSendEmail(
+                user.email,
+                env.EMAIL_FROM,
+                subject,
+                `Reset password code is: ${ this.resetPasswordCode }`
+            );
         }
         await this.save();
     };
 
     User.prototype.sendConfirmEmailCode = async function () {
         this.confirmEmailCode = Math.random().toString(36).substring(2, 6);
-        const subject = 'Confirm Your Email';
+        const subject = 'Confirm email';
         if (env.DEBUG === 'true') {
             console.log(
                 this.email,
@@ -96,7 +102,12 @@ export default (sequelize, DateTypes) => {
                 `Verification code is: ${ this.confirmEmailCode }`
             );
         } else {
-
+            await sesSendEmail(
+                user.email,
+                env.EMAIL_FROM,
+                subject,
+                `Verification code is: ${ this.confirmEmailCode }`
+            );
         }
         await this.save();
     };
@@ -128,15 +139,20 @@ export default (sequelize, DateTypes) => {
     });
 
     User.afterCreate(async (user) => {
-        const subject = 'Confirm Your Email';
+        const subject = 'Confirm email';
         if (env.DEBUG === 'true') {
             console.log(
                 user.email,
                 subject,
-                `Your verification code is: ${ user.confirmEmailCode }`
+                `Verification code is: ${ user.confirmEmailCode }`
             );
         } else {
-
+            await sesSendEmail(
+                user.email,
+                env.EMAIL_FROM,
+                subject,
+                `Verification code is: ${ user.confirmEmailCode }`
+            );
         }
     });
 
