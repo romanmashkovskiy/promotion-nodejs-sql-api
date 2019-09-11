@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import env from '../config/env';
 import { pick } from 'lodash';
 import { generateHash } from '../utils/hash';
-import { sesSendEmail } from '../utils/aws';
+import sendEmail from '../utils/email';
 
 export default (sequelize, DateTypes) => {
     const User = sequelize.define('user', {
@@ -82,9 +82,8 @@ export default (sequelize, DateTypes) => {
                 `Reset password code is: ${ this.resetPasswordCode }`
             );
         } else {
-            await sesSendEmail(
-                user.email,
-                env.EMAIL_FROM,
+            await sendEmail(
+                this.email,
                 subject,
                 `Reset password code is: ${ this.resetPasswordCode }`
             );
@@ -102,9 +101,8 @@ export default (sequelize, DateTypes) => {
                 `Verification code is: ${ this.confirmEmailCode }`
             );
         } else {
-            await sesSendEmail(
-                user.email,
-                env.EMAIL_FROM,
+            await sendEmail(
+                this.email,
                 subject,
                 `Verification code is: ${ this.confirmEmailCode }`
             );
@@ -147,9 +145,8 @@ export default (sequelize, DateTypes) => {
                 `Verification code is: ${ user.confirmEmailCode }`
             );
         } else {
-            await sesSendEmail(
+            await sendEmail(
                 user.email,
-                env.EMAIL_FROM,
                 subject,
                 `Verification code is: ${ user.confirmEmailCode }`
             );
