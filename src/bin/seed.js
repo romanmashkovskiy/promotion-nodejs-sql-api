@@ -7,7 +7,7 @@ const seed = () => {
         User.create({
             id: '0c683b6e-32d5-445d-bd1a-589ea455106b',
             userName: 'User1',
-            email: 'user1@gmail.com',
+            email: 'user1@email.com',
             password: 'asdfasdf',
             isConfirmed: true
 
@@ -15,7 +15,7 @@ const seed = () => {
         User.create({
             id: 'ad912e3f-432c-4723-8245-2eb3a665b0b0',
             userName: 'User2',
-            email: 'user2@gmail.com',
+            email: 'user2@email.com',
             password: 'asdfasdf',
             isConfirmed: true
         }),
